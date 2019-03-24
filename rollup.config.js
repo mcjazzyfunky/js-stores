@@ -9,7 +9,7 @@ import gzip from 'rollup-plugin-gzip'
 
 const configs = []
 
-for (const module of ['core', 'react']) {
+for (const module of ['core', 'react', 'js-widgets']) {
   for (const format of ['umd', 'cjs', 'amd', 'esm']) {
     for (const productive of [false, true]) {
       configs.push(createConfig(module, format, productive))
@@ -31,7 +31,13 @@ function createConfig(module, moduleFormat, productive) {
         : `dist/js-stores.${module}.${moduleFormat}.development.js`,
 
       format: moduleFormat,
-      name: 'jsStores', 
+
+      name: {
+        'core': 'jsStores',
+        'react': 'jsStores.react',
+        'js-widgets': 'jsStores.jsWidgets'
+      }[module],
+
       sourcemap: productive ? false : 'inline',
 
       globals: {
