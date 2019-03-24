@@ -1,15 +1,10 @@
 /* @jsx createElement */
 
 import { createElement, defineComponent } from 'js-widgets'
-import * as Hooks from 'js-widgets/hooks'
-import * as DOM from 'js-widgets/dom'
-//import { useProps } from 'js-widgets/hooks'
-//import { mount } from 'js-widgets/dom'
+import { useProps } from 'js-widgets/hooks'
+import { mount } from 'js-widgets/dom'
 import { useStore } from '../modules/js-widgets/main/index'
 import createCounterStore from './createCounterStore'
-
-const { useProps } = (Hooks as any).default
-const { mount } = (DOM as any).default
 
 type CounterProps = {
   initialValue?: number,

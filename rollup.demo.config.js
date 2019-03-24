@@ -22,7 +22,12 @@ export default {
   
   plugins: [
     resolve(),
-    commonjs(),
+    commonjs({
+      namedExports: {
+        'node_modules/js-widgets/hooks/index.js': ['useProps'],
+        'node_modules/js-widgets/dom/index.js': ['mount']
+      }
+    }),
     replace({
       values: {
         'process.env.NODE_ENV': "'development'"
