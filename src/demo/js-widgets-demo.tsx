@@ -27,7 +27,7 @@ const Counter = defineComponent<CounterProps>({
   init(c) {
     const
       getProps = useProps(c),
-      store = useStore(c, () => createCounterStore(getProps().initialValue)),
+      store = useStore(c, () => createCounterStore(getProps().initialValue!)),
       onIncrement = () => store.increment(),
       onDecrement = () => store.decrement()
 
@@ -52,4 +52,4 @@ const Demo = defineComponent({
     </div>
 })
 
-mount(<Demo/>, document.getElementById('js-widgets-demo'))
+mount(<Demo/>, document.getElementById('js-widgets-demo')!)
