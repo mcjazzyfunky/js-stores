@@ -7,7 +7,7 @@ export default function useStore<T extends object>(
 ): T {
   const
     store: T = create(),
-    unsubscribe = observeStore(store, () => c.forceUpdate)
+    unsubscribe = observeStore(store, () => c.forceUpdate())
 
   c.onUnmount(() => unsubscribe)
 

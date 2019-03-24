@@ -6,6 +6,9 @@ import * as Hooks from 'js-widgets/hooks'
 import { useStore } from '../modules/js-widgets/main/index'
 import createCounterStore from './createCounterStore'
 
+const { mount } = (DOM as any).default
+const { useProps } = (Hooks as any).default
+
 type CounterProps = {
   initialValue?: number,
   label?: string
@@ -21,7 +24,7 @@ const Counter = defineComponent<CounterProps>({
 
   init(c) {
     const
-      getProps = Hooks.useProps(c),
+      getProps = useProps(c),
       store = useStore(c, () => createCounterStore(getProps().initialValue)),
       onIncrement = () => store.increment(),
       onDecrement = () => store.decrement()
@@ -37,13 +40,14 @@ const Counter = defineComponent<CounterProps>({
   }
 })
 
-function Demo() {
-  return (
+const Demo = defineComponent({
+  displayName: 'Demo',
+  
+  render: () =>
     <div>
       <h3>jsWidgets Counter</h3>
       <Counter/>
     </div>
-  )
-}
-console.log(Demo)
-DOM.mount(<Demo/>, document.getElementById('js-widgets-demo'))
+})
+
+mount(<Demo/>, document.getElementById('js-widgets-demo'))
