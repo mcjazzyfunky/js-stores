@@ -6,10 +6,10 @@ import serve from 'rollup-plugin-serve'
 import livereload from 'rollup-plugin-livereload'
 
 export default {
-  input: 'src/demo/demo.ts',
+  input: 'src/demo/index.ts',
 
   output: {
-    file: './build/demo.js',
+    file: './build/demo/index.js',
     format: 'umd',
 
     globals: {
@@ -24,8 +24,6 @@ export default {
     resolve(),
     commonjs(),
     replace({
-      //exclude: 'node_modules/**',
-      
       values: {
         'process.env.NODE_ENV': "'development'"
       }
