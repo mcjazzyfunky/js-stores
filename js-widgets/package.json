@@ -1,0 +1,5 @@
+{
+  "name": "js-stores/js-widgets",
+  "typings": "../dist/types/js-widgets/main/index.d.ts",
+  "main": "./index.js"
+}

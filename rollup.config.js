@@ -56,6 +56,16 @@ function createConfig(module, moduleFormat, productive) {
       }),
       typescript({
         exclude: 'node_modules/**',
+        delimiters: ['', ''],
+
+        values: {
+          'process.env.NODE_ENV': productive ? "'production'" : "'development'",
+          "'../core/main/index'": "'js-stores'",
+          "'../../core/main/index'": "'js-stores'",
+          "'../../../core/main/index'": "'js-stores'",
+          "'../../../../core/main/index'": "'js-stores'",
+          "'../../../../../core/main/index'": "'js-stores'",
+        }
       }),
       productive && (moduleFormat === 'esm' ? terser() : uglifyJS()),
       productive && gzip()

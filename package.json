@@ -86,7 +86,7 @@
   },
   "dependencies": {
     "js-spec": "^0.1.63",
-    "js-widgets": "0.0.30",
+    "js-widgets": "0.0.33",
     "react": "^16.8.5",
     "react-dom": "^16.8.5"
   }
