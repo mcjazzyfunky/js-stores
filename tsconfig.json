@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "noImplicitAny": true,
+    "jsx": "react",
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "lib": ["es7", "dom"],
+    "esModuleInterop": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "types": [
+      "node", "mocha", "chai"
+    ]
+  },
+  "files": [
+    "src/modules/core/main/index.ts",
+    "src/modules/react/main/index.ts",
+    "src/modules/js-widgets/main/index.ts"
+  ]
+}

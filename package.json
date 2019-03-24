@@ -1,0 +1,86 @@
+{
+  "name": "js-stores",
+  "version": "0.0.8",
+  "license": "LGPL-3.0",
+  "homepage": "https://github.com/js-works/js-stores",
+  "main": "index.js",
+  "types": "dist/types/js-stores.d.ts",
+  "module": "dist/js-stores.esm.production.js",
+  "unpkg": "dist/js-stores.umd.production.js",
+  "jsdelivr": "dist/js-stores.umd.production.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/js-works/js-stores.git"
+  },
+  "files": [
+    "index.js",
+    "react.js",
+    "js-widgets.js",
+    "dist"
+  ],
+  "devDependencies": {
+    "@nx-js/observer-util": "^4.2.2",
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^11.11.6",
+    "@types/react": "^16.8.8",
+    "@types/react-dom": "^16.8.3",
+    "bestzip": "^2.1.2",
+    "chai": "~4.2.0",
+    "copyfiles": "^2.1.0",
+    "coveralls": "^3.0.3",
+    "cross-conf-env": "^1.1.2",
+    "crypto.js": "^1.2.1",
+    "mocha": "^6.0.2",
+    "nyc": "^13.3.0",
+    "react": "^16.8.5",
+    "react-dom": "^16.8.5",
+    "rollup": "^1.7.0",
+    "rollup-plugin-commonjs": "^9.2.1",
+    "rollup-plugin-gzip": "^2.2.0",
+    "rollup-plugin-livereload": "^1.0.0",
+    "rollup-plugin-node-resolve": "^4.0.1",
+    "rollup-plugin-replace": "^2.1.1",
+    "rollup-plugin-serve": "^1.0.1",
+    "rollup-plugin-terser": "^4.0.4",
+    "rollup-plugin-tslint": "^0.2.2",
+    "rollup-plugin-typescript2": "^0.20.1",
+    "rollup-plugin-uglify": "^6.0.2",
+    "rollup-plugin-uglify-es": "0.0.1",
+    "shx": "^0.3.2",
+    "ts-loader": "^5.3.3",
+    "ts-node": "^8.0.3",
+    "tslint": "^5.14.0",
+    "typedoc": "^0.14.2",
+    "typescript": "^3.3.4000"
+  },
+  "scripts": {
+    "clean": "shx rm -rf ./build ./dist ./coverage",
+    "build": "rollup --config rollup.config.js && tsc -d --emitDeclarationOnly --declarationDir dist/types",
+    "test": "nyc mocha -r ts-node/register src/test/**/*.ts",
+    "test-watch": "mocha -w -r ts-node/register src/test/**/*.ts",
+    "demo": "rollup --c rollup.demo.config.js -w",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "docs": "shx rm -rf ./dist/docs && \"node_modules/.bin/cross-conf-env\" typedoc --options ./typedoc.json src/main/api/ -name \"js-stores vnpm_package_version\"",
+    "zipsource": "shx rm -rf ./build/source && shx mkdir -p ./build/source && copyfiles -a ./* ./build/source && shx cp -r ./src ./build/source && shx mkdir -p ./dist/source && cd build/source && bestzip ../../dist/source/source.zip . && cd ../..",
+    "dist": "npm run clean && npm run test && npm run build && npm run docs && npm run zipsource"
+  },
+  "nyc": {
+    "temp-directory": "./coverage/.nyc_output",
+    "include": [
+      "src/main"
+    ],
+    "exclude": [
+      "src/main/js-stores.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "reporter": [
+      "lcov",
+      "text"
+    ],
+    "all": true
+  },
+  "dependencies": {}
+}
