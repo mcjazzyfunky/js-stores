@@ -55,21 +55,25 @@
   "scripts": {
     "clean": "shx rm -rf ./build ./dist ./coverage",
     "build": "rollup --config rollup.config.js && tsc -d --emitDeclarationOnly --declarationDir dist/types",
-    "test": "nyc mocha -r ts-node/register src/test/**/*.ts",
-    "test-watch": "mocha -w -r ts-node/register src/test/**/*.ts",
+    "test": "nyc mocha -r ts-node/register src/modules/*/test/**/*.ts",
+    "test-watch": "mocha -w -r ts-node/register src/modules/*/test/**/*.ts",
     "demo": "rollup --c rollup.demo.config.js -w",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "docs": "shx rm -rf ./dist/docs && \"node_modules/.bin/cross-conf-env\" typedoc --options ./typedoc.json src/main/api/ -name \"js-stores vnpm_package_version\"",
+    "docs": "shx rm -rf ./dist/docs && \"node_modules/.bin/cross-conf-env\" typedoc --options ./typedoc.json src/modules/core/main/api/ -name \"js-stores vnpm_package_version\"",
     "zipsource": "shx rm -rf ./build/source && shx mkdir -p ./build/source && copyfiles -a ./* ./build/source && shx cp -r ./src ./build/source && shx mkdir -p ./dist/source && cd build/source && bestzip ../../dist/source/source.zip . && cd ../..",
     "dist": "npm run clean && npm run test && npm run build && npm run docs && npm run zipsource"
   },
   "nyc": {
     "temp-directory": "./coverage/.nyc_output",
     "include": [
-      "src/main"
+      "src/modules/core/main",
+      "src/modules/react/main",
+      "src/modules/js-widgets/main"
     ],
     "exclude": [
-      "src/main/js-stores.ts"
+      "src/modules/core/main/index.ts",
+      "src/modules/react/main/index.ts",
+      "src/modules/js-widgets/main/index.ts"
     ],
     "extension": [
       ".ts"
