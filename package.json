@@ -1,10 +1,10 @@
 {
   "name": "js-stores",
-  "version": "0.0.11",
+  "version": "0.0.13",
   "license": "LGPL-3.0",
   "homepage": "https://github.com/js-works/js-stores",
   "main": "index.js",
-  "types": "dist/types/js-stores.d.ts",
+  "types": "dist/types/core/main/index.d.ts",
   "module": "dist/js-stores.esm.production.js",
   "unpkg": "dist/js-stores.umd.production.js",
   "jsdelivr": "dist/js-stores.umd.production.js",
@@ -14,12 +14,11 @@
   },
   "files": [
     "index.js",
-    "react.js",
-    "js-widgets.js",
+    "react",
+    "js-widgets",
     "dist"
   ],
   "devDependencies": {
-    "@nx-js/observer-util": "^4.2.2",
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.6",
     "@types/node": "^11.11.6",
