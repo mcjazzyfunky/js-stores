@@ -6,7 +6,7 @@ import serve from 'rollup-plugin-serve'
 import livereload from 'rollup-plugin-livereload'
 
 export default {
-  input: 'src/demo/demo.tsx',
+  input: 'src/demo/demo.ts',
 
   output: {
     file: './build/demo.js',
@@ -24,7 +24,7 @@ export default {
     resolve(),
     commonjs(),
     replace({
-      exclude: 'node_modules/**',
+      //exclude: 'node_modules/**',
       
       values: {
         'process.env.NODE_ENV': "'development'"

@@ -1,0 +1,1 @@
+export { default as useStore } from '../main/api/useStore'

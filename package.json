@@ -33,8 +33,6 @@
     "crypto.js": "^1.2.1",
     "mocha": "^6.0.2",
     "nyc": "^13.3.0",
-    "react": "^16.8.5",
-    "react-dom": "^16.8.5",
     "rollup": "^1.7.0",
     "rollup-plugin-commonjs": "^9.2.1",
     "rollup-plugin-gzip": "^2.2.0",
@@ -82,5 +80,10 @@
     ],
     "all": true
   },
-  "dependencies": {}
+  "dependencies": {
+    "js-spec": "^0.1.63",
+    "js-widgets": "0.0.29",
+    "react": "^16.8.5",
+    "react-dom": "^16.8.5"
+  }
 }
