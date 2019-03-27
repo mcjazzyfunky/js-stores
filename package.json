@@ -1,6 +1,6 @@
 {
   "name": "js-stores",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "license": "LGPL-3.0",
   "homepage": "https://github.com/js-works/js-stores",
   "main": "index.js",
@@ -30,6 +30,7 @@
     "coveralls": "^3.0.3",
     "cross-conf-env": "^1.1.2",
     "crypto.js": "^1.2.1",
+    "js-widgets": "0.0.37",
     "mocha": "^6.0.2",
     "nyc": "^13.3.0",
     "rollup": "^1.7.3",
@@ -85,9 +86,6 @@
   },
   "dependencies": {
     "js-spec": "^0.1.66",
-    "js-stores--react": "file:react",
-    "js-stores--widgets": "file:js-widgets",
-    "js-widgets": "^0.0.37",
     "react": "^16.8.5",
     "react-dom": "^16.8.5"
   }

@@ -1,6 +1,5 @@
 {
-  "name": "js-stores--with-js-widgets",
-  "version": "1.0.0",
-  "typings": "../dist/types/js-widgets/main/index.d.ts",
+  "name": "js-stores/with-js-widgets",
+  "typings": "../dist/types/with-js-widgets/main/index.d.ts",
   "main": "./index.js"
 }
