@@ -1,5 +1,6 @@
 {
-  "name": "js-stores/react",
+  "name": "js-stores--with-react",
+  "version": "1.0.0",
   "typings": "../dist/types/react/main/index.d.ts",
   "main": "./index.js"
 }

@@ -18,7 +18,7 @@
   },
   "files": [
     "src/modules/core/main/index.ts",
-    "src/modules/react/main/index.ts",
-    "src/modules/js-widgets/main/index.ts"
+    "src/modules/with-react/main/index.ts",
+    "src/modules/with-js-widgets/main/index.ts"
   ]
 }

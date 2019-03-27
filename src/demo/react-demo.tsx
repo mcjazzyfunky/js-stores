@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { useStore } from '../modules/react/main/index'
+import { useStore } from '../modules/with-react/main/index'
 import createCounterStore from './createCounterStore'
 
 const { useCallback } = React

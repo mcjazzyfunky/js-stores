@@ -3,7 +3,7 @@
 import { createElement, defineComponent } from 'js-widgets'
 import { useProps } from 'js-widgets/hooks'
 import { mount } from 'js-widgets/dom'
-import { useStore } from '../modules/js-widgets/main/index'
+import { useStore } from '../modules/with-js-widgets/main/index'
 import createCounterStore from './createCounterStore'
 
 type CounterProps = {
@@ -14,7 +14,7 @@ type CounterProps = {
 const Counter = defineComponent<CounterProps>({
   displayName: 'Counter',
 
-  defaultProps: {
+  defaults: {
     initialValue: 0,
     label: 'Counter'
   },
