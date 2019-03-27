@@ -1,7 +1,11 @@
 type Updater1<T extends object> = Partial<T> |  (() => void) 
-type Updater2<S extends object> = Partial<S> | ((oldState: S) => Partial<S>) 
+type Updater2<S extends object> = Partial<S> | ((oldState: S) => Partial<S>)
+type Methods = Record<string, (...args: any[]) => any> & { state?: never } 
 
 function initStore<T extends object>(base: T): [T, (updater?: Updater1<T> | null) => void]
+
+function initStore<S extends object, T extends Methods>(initialState: S, base: T):
+  [T & { state: S }, (updater: Updater2<S>) => void]
 
 function initStore(a1: any, a2?: any) {
   let ret: any
@@ -23,7 +27,7 @@ function initStore(a1: any, a2?: any) {
 
 function initStore1<T extends object>(base: T): [T, (updater?: Updater1<T> | null) => void] {
   const
-    self: T = createEmptyStore(),
+    [self, emit] = createEmptyStore(),
 
     update = (updater?: Updater1<T> | null) => {
       if (typeof updater === 'function') {
@@ -35,21 +39,44 @@ function initStore1<T extends object>(base: T): [T, (updater?: Updater1<T> | nul
           + '- must be a function, an object or empty')
       }
 
-      (self.constructor as any).__emit()
+      emit()
     }
- 
+
   Object.assign(self, base)
+  
+  return [self, update]
+}
+
+function initStore2<S extends object, T extends Methods>(initialState: S, base: T):
+  [T & { state: S }, (updater: Updater2<S>) => void] {
+
+  let updaters: Updater2<S>[] = []
+
+  const
+    [self, emit] = createEmptyStore(),
+
+    update = (updater: Updater2<S>) => {
+      const typeOfUpdater = typeof updater
+
+      if (updater !== null && (typeOfUpdater === 'function' || typeOfUpdater === 'object')) {
+        updaters.push(updater)
+      } else {
+        throw new TypeError('Illegal first argument for update function '
+          + '- must be a function or an object')
+      }
+
+      emit(() => {
+        self.state = processUpdaters(updaters, self.state)
+      })
+    }
+
+  Object.assign(self, base)
+  self.state = { ...initialState }
 
   return [self, update]
 }
 
-function initStore2<S extends object, T extends Object>(initialState: S, base: T):
-  [T & { state: S }, (updater: Updater2<S>) => void] {
-
-  return null as any
-}
-
-function createEmptyStore(): any {
+function createEmptyStore(): [any, (runPrior?: () => void) => void] {
   const
     Store: any = () => {},
     observers = [] as any[]
@@ -66,10 +93,14 @@ function createEmptyStore(): any {
     }
   }
 
-  Store.__emit = () => {
+  function emit(runPrior?: () => void) {
     if (!timeout) {
       timeout = setTimeout(() => {
         timeout = null
+
+        if (runPrior) {
+          runPrior()
+        }
 
         const obs = [...observers]
 
@@ -80,7 +111,20 @@ function createEmptyStore(): any {
     }
   }
 
-  return new Store 
+  return [new Store, emit] 
+}
+
+function processUpdaters(updaters: any[], oldState: any) {
+  const ret = {...oldState}
+
+  for (let i = 0; i < updaters.length; ++i) {
+    const updater = updaters[i]
+    Object.assign(ret, typeof updater === 'object' ? updater : updater(ret))
+  }
+
+  updaters.length = 0
+
+  return ret
 }
 
 export default initStore
