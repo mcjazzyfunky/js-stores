@@ -9,7 +9,7 @@ export default function createAsyncCounterStore(initialValue: number) {
     },
 
     decrement() {
-      update({ count: self.count - 1 })
+      update(() => --self.count )
     }
   })
  

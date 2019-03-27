@@ -30,13 +30,19 @@ function initStore1<T extends object>(base: T): [T, (updater?: Updater1<T> | nul
     [self, emit] = createEmptyStore(),
 
     update = (updater?: Updater1<T> | null) => {
+      if (process.env.NODE_ENV === 'development' as any) {
+        if (updater !== undefined && updater !== null
+          && typeof updater !== 'object' && typeof updater !== 'function') {
+          
+          throw new TypeError('Illegal first argument for update function '
+            + '- must be a function, an object or empty')
+        }
+      }
+
       if (typeof updater === 'function') {
         updater()
-      } else if (updater !== null && typeof updater === 'object') {
+      } else {
         Object.assign(self, updater)
-      } else if (updater !== undefined && updater !== null) {
-        throw new TypeError('Illegal first argument for update function '
-          + '- must be a function, an object or empty')
       }
 
       emit()
@@ -58,12 +64,14 @@ function initStore2<S extends object, T extends Methods>(initialState: S, base: 
     update = (updater: Updater2<S>) => {
       const typeOfUpdater = typeof updater
 
-      if (updater !== null && (typeOfUpdater === 'function' || typeOfUpdater === 'object')) {
-        updaters.push(updater)
-      } else {
-        throw new TypeError('Illegal first argument for update function '
-          + '- must be a function or an object')
+      if (process.env.NODE_ENV === 'developement' as any) {
+        if (updater === null || (typeOfUpdater !== 'function' && typeOfUpdater !== 'object')) {
+          throw new TypeError('Illegal first argument for update function '
+            + '- must be a function or an object')
+        }
       }
+  
+      updaters.push(updater)
 
       emit(() => {
         self.state = processUpdaters(updaters, self.state)
