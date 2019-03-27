@@ -9,7 +9,7 @@ export default function createCounterStore(initialValue: number) {
     },
 
     decrement() {
-      update({ count: self.count + 1 })
+      update({ count: self.count - 1 })
     }
   })
  
