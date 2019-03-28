@@ -1,20 +1,12 @@
 import React from 'react'
-import { observeStore } from '../../../core/main/index'
 
 const { useEffect, useState } = React
 
-function useStore<T>(create: () => T): T {
-   const
-      [[store], set] = useState(() => {
-        return [create()]
-      })
+function useStore<T extends { subscribe(subscriber: () => void): void }>(create: () => T): T {
+   const [{ store }, set] = useState(() => ({ store: create() }))
 
     useEffect(() => {
-      const unsubscribe = observeStore(store, () => {
-        set([store])
-      })
-
-      return unsubscribe 
+      return store.subscribe(() => set({ store }))
     }, [])
 
    return store

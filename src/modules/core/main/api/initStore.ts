@@ -1,11 +1,14 @@
 type Updater1<T extends object> = Partial<T> |  (() => void) 
 type Updater2<S extends object> = Partial<S> | ((oldState: S) => Partial<S>)
-type Methods = Record<string, (...args: any[]) => any> & { state?: never } 
+type Methods = Record<string, (...args: any[]) => any>
+type ExcludeReserved<T> = T & { state?: never, subscribe?: never } 
+type Subscribable = { subscribe: (subscriber: () => void) => void }
 
-function initStore<T extends object>(base: T): [T, (updater?: Updater1<T> | null) => void]
+function initStore<T extends object>(base: ExcludeReserved<T>):
+  [T & Subscribable, (updater?: Updater1<T> | null) => void]
 
-function initStore<S extends object, T extends Methods>(initialState: S, base: T):
-  [T & { state: S }, (updater: Updater2<S>) => void]
+function initStore<S extends object, T extends Methods>(initialState: S, base: ExcludeReserved<T>):
+  [T & Subscribable & { state: S }, (updater: Updater2<S>) => void]
 
 function initStore(a1: any, a2?: any) {
   let ret: any
@@ -25,7 +28,9 @@ function initStore(a1: any, a2?: any) {
   return ret
 }
 
-function initStore1<T extends object>(base: T): [T, (updater?: Updater1<T> | null) => void] {
+function initStore1<T extends object>(base: ExcludeReserved<T>):
+  [T & Subscribable, (updater?: Updater1<T> | null) => void] {
+
   const
     [self, emit] = createEmptyStore(),
 
@@ -53,8 +58,8 @@ function initStore1<T extends object>(base: T): [T, (updater?: Updater1<T> | nul
   return [self, update]
 }
 
-function initStore2<S extends object, T extends Methods>(initialState: S, base: T):
-  [T & { state: S }, (updater: Updater2<S>) => void] {
+function initStore2<S extends object, T extends Methods>(initialState: S, base: ExcludeReserved<T>):
+  [T & Subscribable & { state: S }, (updater: Updater2<S>) => void] {
 
   let updaters: Updater2<S>[] = []
 
@@ -86,20 +91,22 @@ function initStore2<S extends object, T extends Methods>(initialState: S, base: 
 
 function createEmptyStore(): [any, (runPrior?: () => void) => void] {
   const
-    Store: any = () => {},
-    observers = [] as any[]
+    observers = [] as any[],
+    
+    store = {
+      subscribe: (subscriber: any) => {
+        const observer = subscriber.bind(null)
+        
+        observers.push(observer)
+
+        return () => {
+          const idx = observers.indexOf(observer)
+          observers.splice(idx, 1)
+        }
+      }
+    }
 
   let timeout: any = null
-
-  Store.__subscribe = (subscriber: any) => {
-    const observer = subscriber.bind(null)
-    observers.push(observer)
-
-    return () => {
-      const idx = observers.indexOf(observer)
-      observers.splice(idx, 1)
-    }
-  }
 
   function emit(runPrior?: () => void) {
     if (!timeout) {
@@ -119,7 +126,7 @@ function createEmptyStore(): [any, (runPrior?: () => void) => void] {
     }
   }
 
-  return [new Store, emit] 
+  return [store, emit] 
 }
 
 function processUpdaters(updaters: any[], oldState: any) {

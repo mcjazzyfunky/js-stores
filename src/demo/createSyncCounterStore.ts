@@ -1,6 +1,6 @@
 import { initStore } from '../modules/core/main/index'
 
-export default function createAsyncCounterStore(initialValue: number) {
+export default function createSyncCounterStore(initialValue: number) {
   const [self, update] = initStore({
     count: initialValue,
 

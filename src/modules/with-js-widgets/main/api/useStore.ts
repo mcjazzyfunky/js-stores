@@ -1,13 +1,12 @@
 import { Component } from 'js-widgets'
-import { observeStore } from '../../../core/main/index'
 
-export default function useStore<T extends object>(
+export default function useStore<T extends { subscribe(subscriber: () => void): void }>(
   c: Component,
   create: () => T
 ): T {
   const
     store: T = create(),
-    unsubscribe = observeStore(store, () => c.forceUpdate())
+    unsubscribe = store.subscribe(() => c.forceUpdate())
 
   c.onUnmount(() => unsubscribe)
 
