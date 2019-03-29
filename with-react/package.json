@@ -1,5 +1,4 @@
 {
-  "name": "js-stores/with-react",
   "typings": "../dist/types/with-react/main/index.d.ts",
   "main": "./index.js"
 }
