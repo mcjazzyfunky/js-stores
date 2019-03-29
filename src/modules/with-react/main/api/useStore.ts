@@ -1,15 +1,32 @@
 import React from 'react'
+import { isStore, observeStore } from '../../../core/main/index'
 
 const { useEffect, useState } = React
 
-function useStore<T extends { subscribe(subscriber: () => void): void }>(create: () => T): T {
-   const [{ store }, set] = useState(() => ({ store: create() }))
+export default function useStore<T>(create: () => T): T {
+  if (process.env.NODE_ENV === 'development' as any) {
+    if (typeof create !== 'function') {
+      throw new TypeError(
+        '[useStore] First argument store "create" must be a function')
+    }
+  }
 
-    useEffect(() => {
-      return store.subscribe(() => set({ store }))
-    }, [])
+  const [{ store }, set] = useState(() => {
+    const store = create()
+    
+    if (process.env.NODE_ENV === 'development' as any) {
+      if (!isStore(store)) {
+        throw new TypeError(
+          '[useStore] Return value of function "create" must be a valid store')
+      }
+    }
 
-   return store
+    return { store }
+  })
+
+  useEffect(() => {
+    return observeStore(store, () => set({ store }))
+  }, [])
+
+  return store
 }
-
-export default useStore

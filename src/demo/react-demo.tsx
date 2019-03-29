@@ -1,14 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { useStore } from '../modules/with-react/main/index'
-import createSyncCounterStore from './createSyncCounterStore'
-import createAsyncCounterStore from './createAsyncCounterStore'
+import createCounterStore from './createCounterStore'
 
 const { useCallback } = React
 
-function SyncCounter({ initialValue = 0, label = 'Counter'}) {
+function Counter({ initialValue = 0, label = 'Counter'}) {
   const
-    store = useStore(() => createSyncCounterStore(initialValue)),
+    store = useStore(() => createCounterStore(initialValue)),
     onIncrement = useCallback(() => store.increment(), []),
     onDecrement = useCallback(() => store.decrement(), [])
 
@@ -22,29 +21,11 @@ function SyncCounter({ initialValue = 0, label = 'Counter'}) {
   )
 }
 
-function AsyncCounter({ initialValue = 0, label = 'Counter'}) {
-  const
-    store = useStore(() => createAsyncCounterStore(initialValue)),
-    onIncrement = useCallback(() => store.increment(), []),
-    onDecrement = useCallback(() => store.decrement(), [])
-
-  return (
-    <div>
-      <label>{` ${label}: `}</label>
-      <button onClick={onDecrement}>-</button>
-      {` ${store.state.count} `}
-      <button onClick={onIncrement}>+</button>
-    </div>
-  )
-}
-
 function Demo() {
   return (
     <div>
-      <h3>React Counter (sync.)</h3>
-      <SyncCounter/>
-      <h3>React Counter (async.)</h3>
-      <AsyncCounter/>
+      <h3>React Counter</h3>
+      <Counter/>
     </div>
   )
 }

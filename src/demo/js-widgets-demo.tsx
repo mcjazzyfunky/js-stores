@@ -4,16 +4,15 @@ import { createElement, defineComponent } from 'js-widgets'
 import { useProps } from 'js-widgets/hooks'
 import { mount } from 'js-widgets/dom'
 import { useStore } from '../modules/with-js-widgets/main/index'
-import createSyncCounterStore from './createSyncCounterStore'
-import createAsyncCounterStore from './createAsyncCounterStore'
+import createCounterStore from './createCounterStore'
 
 type CounterProps = {
   initialValue?: number,
   label?: string
 }
 
-const SyncCounter = defineComponent<CounterProps>({
-  displayName: 'SyncCounter',
+const Counter = defineComponent<CounterProps>({
+  displayName: 'Counter',
 
   defaults: {
     initialValue: 0,
@@ -23,7 +22,7 @@ const SyncCounter = defineComponent<CounterProps>({
   init(c) {
     const
       getProps = useProps(c),
-      store = useStore(c, () => createSyncCounterStore(getProps().initialValue!)),
+      store = useStore(c, () => createCounterStore(getProps().initialValue!)),
       onIncrement = () => store.increment(),
       onDecrement = () => store.decrement()
 
@@ -38,41 +37,13 @@ const SyncCounter = defineComponent<CounterProps>({
   }
 })
 
-const AsyncCounter = defineComponent<CounterProps>({
-  displayName: 'SyncCounter',
-
-  defaults: {
-    initialValue: 0,
-    label: 'Counter'
-  },
-
-  init(c) {
-    const
-      getProps = useProps(c),
-      store = useStore(c, () => createAsyncCounterStore(getProps().initialValue!)),
-      onIncrement = () => store.increment(),
-      onDecrement = () => store.decrement()
-
-    return props => (
-      <div>
-        <label>{` ${props.label}: `}</label>
-        <button onClick={onDecrement}>-</button>
-        {` ${store.state.count} `}
-        <button onClick={onIncrement}>+</button>
-      </div>
-    )
-  }
-})
-
 const Demo = defineComponent({
   displayName: 'Demo',
   
   render: () =>
     <div>
-      <h3>jsWidgets Counter (sync.)</h3>
-      <SyncCounter/>
-      <h3>jsWidgets Counter (async.)</h3>
-      <AsyncCounter/>
+      <h3>jsWidgets Counter</h3>
+      <Counter/>
     </div>
 })
 
