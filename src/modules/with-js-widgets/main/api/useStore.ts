@@ -12,7 +12,7 @@ export default function useStore<T>(c: Component, store: T): T {
   }
 
   const unsubscribe = 
-    (store.constructor as any).__subscribe__(() => c.forceUpdate())
+    ((store as any).constructor).__subscribe__(() => c.forceUpdate())
 
   c.onUnmount(unsubscribe)
 
