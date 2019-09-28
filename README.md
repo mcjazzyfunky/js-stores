@@ -12,52 +12,64 @@ Very small store library - mainly to be used locally within UI components
 npm install --save js-stores
 
 ## Usage
-```tsx
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { initStore } from 'js-stores'
-import { useStore } from 'js-stores/react'
+```ts
+import { defineMessages } from 'js-messages'
+import { createStore, Handler } from 'js-stores'
 
-const { useCallback } = React
+type CounterState = { count: number }
 
-function createStore() { 
-  const [self, update] = initStore({
-    count: initialValue,
+const CounterActions = defineMessages({
+  increment: (delta = 1) => ({ delta }),
+  decrement: (delta = 1) => ({ delta }),
+  reset: {}
+})
 
-    increment() {
-      increase(1)
+const counterHandler: Handler<CounterState, typeof CounterActions> = use => {
+  return {
+    increment(model, { delta }) {
+      model.count += delta
     },
 
-    decrement() {
-      increase(-1)
+    decrement(model, { delta }) {
+      model.count -= delta
+    },
+
+    reset(model) {
+      model.count = 0
     }
-  })
-
-  // private
-  function increase(delta: number) {
-    update({ count: self.count + delta })
   }
+}
+
+const store = createStore(counterHandler as any, { count: 0 })
+
+console.log('Initial state:', store.getState())
+
+const unsubscribe = store.subscribe(() => {
+  console.log('New state:', store.getState())
+})
+
+store.dispatch(CounterActions.increment())
+store.dispatch(CounterActions.increment())
+store.dispatch(CounterActions.increment())
+store.dispatch(CounterActions.increment(10))
+store.dispatch(CounterActions.reset())
+store.dispatch(CounterActions.decrement(3))
+unsubscribe()
+store.dispatch(CounterActions.decrement(4))
+console.log('Final state:', store.getState())
+
+/*
+  Output:
   
-  return self
-}
-
-function Counter() {
-  const
-    store = useStore(createStore),
-    increment = useCallback(() => store.increment(), []),
-    decrement = useCallback(() => store.decrement(), [])
-
-  return (
-    <div>
-      <label>Counter: </label>
-      <button onClick={decrement}>-</button>
-      {` ${store.count} `}
-      <button onClick={increment}>+</button>
-    </div>
-  )
-}
-
-ReactDOM.render(<Counter/>, document.getElementById('main-content'))
+  Initial state: { count: 0 }
+  New state: { count: 1 }
+  New state: { count: 2 }
+  New state: { count: 3 }
+  New state: { count: 13 }
+  New state: { count: 0 }
+  New state: { count: -3 }
+  Final state: { count: -7 }  
+*/
 ```
 
 ## License

@@ -8,9 +8,9 @@ import Handler from '../../main/api/types/Handler'
 type CounterState = { count: number }
 
 const CounterActions = defineMessages({
-  reset: {},
   increment: (delta = 1) => ({ delta }),
   decrement: (delta = 1) => ({ delta }),
+  reset: {}
 })
 
 const counterHandler: Handler<CounterState, typeof CounterActions> = use => {
@@ -33,18 +33,20 @@ const store = createStore(counterHandler as any, { count: 0 })
 
 describe('createStore', () => {
   it('some test', () => {
+    console.log('Initial state:', store.getState())
+
     const unsubscribe = store.subscribe(() => {
-      console.log(store.getState())
+      console.log('New state:', store.getState())
     })
 
-    console.log('Start:', store.getState())
     store.dispatch(CounterActions.increment())
-    store.dispatch(CounterActions.increment(100))
     store.dispatch(CounterActions.increment())
+    store.dispatch(CounterActions.increment())
+    store.dispatch(CounterActions.increment(10))
     store.dispatch(CounterActions.reset())
     store.dispatch(CounterActions.decrement(3))
     unsubscribe()
-    store.dispatch(CounterActions.decrement(3))
-    console.log('End:', store.getState())
+    store.dispatch(CounterActions.decrement(4))
+    console.log('Final state:', store.getState())
   })
 })
