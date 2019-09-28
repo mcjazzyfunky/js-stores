@@ -11,7 +11,7 @@ const configs = []
 
 for (const format of ['umd', 'cjs', 'amd', 'esm']) {
   for (const productive of [false, true]) {
-    configs.push(createConfig(module, format, productive))
+    configs.push(createConfig(format, productive))
   }
 }
 
@@ -31,6 +31,12 @@ function createConfig(moduleFormat, productive) {
       format: moduleFormat,
       name: 'jsStores', 
       sourcemap: productive ? false : 'inline',
+
+      globals: {
+        'immer': 'Immer'
+      },
+
+      external: ['immer']
     },
 
     plugins: [
@@ -40,6 +46,7 @@ function createConfig(moduleFormat, productive) {
       //}),
       replace({
         exclude: 'node_modules/**',
+        delimiters: ['', ''],
 
         values: {
           'process.env.NODE_ENV': productive ? "'production'" : "'development'"
@@ -47,11 +54,6 @@ function createConfig(moduleFormat, productive) {
       }),
       typescript({
         exclude: 'node_modules/**',
-        delimiters: ['', ''],
-
-        values: {
-          'process.env.NODE_ENV': productive ? "'production'" : "'development'",
-        }
       }),
       productive && (moduleFormat === 'esm' ? terser() : uglifyJS()),
       productive && gzip()
