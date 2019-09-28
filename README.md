@@ -1,6 +1,6 @@
 # js-stores
 
-Very small store library - mainly to be used locally within UI components
+A small store library (using "Immer" internally)
 
 [![Licence](https://img.shields.io/badge/licence-LGPLv3-blue.svg?style=flat)](https://github.com/js-works/js-stores/blob/master/LICENSE)
 [![npm version](https://img.shields.io/npm/v/js-stores.svg?style=flat)](https://www.npmjs.com/package/js-stores)
@@ -16,13 +16,13 @@ npm install --save js-stores
 import { defineMessages } from 'js-messages'
 import { createStore, Handler } from 'js-stores'
 
-type CounterState = { count: number }
-
 const CounterActions = defineMessages({
   increment: (delta = 1) => ({ delta }),
   decrement: (delta = 1) => ({ delta }),
   reset: {}
 })
+
+type CounterState = { count: number }
 
 const counterHandler: Handler<CounterState, typeof CounterActions> = use => {
   return {
@@ -54,7 +54,9 @@ store.dispatch(CounterActions.increment())
 store.dispatch(CounterActions.increment(10))
 store.dispatch(CounterActions.reset())
 store.dispatch(CounterActions.decrement(3))
+
 unsubscribe()
+
 store.dispatch(CounterActions.decrement(4))
 console.log('Final state:', store.getState())
 
