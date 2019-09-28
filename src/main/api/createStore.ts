@@ -7,11 +7,13 @@ import Handler from './types/Handler'
 // --- createStore --------------------------------------------------
 
 function createStore<S extends Record<string, any>>(handler: Handler<S, any>, initialState: S) {
-  let currState = initialState
+  let
+    observers: ((() => void) | null)[] = [],
+    currState = initialState,
+    isEmitting = false,
+    hasUnsubscribesWhileEmitting = false
 
   const
-     observers: (() => void)[] = [],
-
     subscribe = (observer: () => void) => {
       const obs = observer.bind(null)
 
@@ -20,7 +22,12 @@ function createStore<S extends Record<string, any>>(handler: Handler<S, any>, in
       return () => {
         const idx = observers.findIndex(it => it === obs)
 
-        observers.splice(idx, 1)
+        if (!isEmitting) {
+          observers.splice(idx, 1)
+        } else {
+          observers[idx] = null
+          hasUnsubscribesWhileEmitting = true
+        }
       }
     },
 
@@ -41,11 +48,23 @@ function createStore<S extends Record<string, any>>(handler: Handler<S, any>, in
           if (nextState !== currState) {
             currState = nextState
 
-            const observers2 = [...observers] // TODO
+            isEmitting = true
+            hasUnsubscribesWhileEmitting = false
 
-            for (let i = 0; i < observers2.length; ++i) {
-              observers2[i]()
+            for (let i = 0; i < observers.length; ++i) {
+              const obs = observers[i]
+
+              if (obs) {
+                obs()
+              }
             }
+
+            if (hasUnsubscribesWhileEmitting) {
+              observers = observers.filter(Boolean)
+            }
+
+            isEmitting = false
+            hasUnsubscribesWhileEmitting = false
           }
         }
       }
