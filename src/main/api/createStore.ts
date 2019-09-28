@@ -34,7 +34,7 @@ function createStore<S extends Record<string, any>>(handler: Handler<S, any>, in
       if (msg && msg.type && typeof msg.type === 'string') {
         const type = msg.type
 
-        if (handler.hasOwnProperty(type)) {
+        if (ctrl.hasOwnProperty(type)) {
           const nextState = produce(currState,
             (draft: S) => ctrl[type](draft, msg.payload, msg.meta))
 
