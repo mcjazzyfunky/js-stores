@@ -9,11 +9,9 @@ import gzip from 'rollup-plugin-gzip'
 
 const configs = []
 
-for (const module of ['core', 'with-react', 'with-js-widgets']) {
-  for (const format of ['umd', 'cjs', 'amd', 'esm']) {
-    for (const productive of [false, true]) {
-      configs.push(createConfig(module, format, productive))
-    }
+for (const format of ['umd', 'cjs', 'amd', 'esm']) {
+  for (const productive of [false, true]) {
+    configs.push(createConfig(module, format, productive))
   }
 }
 
@@ -21,32 +19,19 @@ export default configs
 
 // --- locals -------------------------------------------------------
 
-function createConfig(module, moduleFormat, productive) {
+function createConfig(moduleFormat, productive) {
   return {
-    input: `src/modules/${module}/main/index.ts`,
+    input: 'src/main/index.ts',
 
     output: {
       file: productive
-        ? `dist/js-stores.${module}.${moduleFormat}.production.js`
-        : `dist/js-stores.${module}.${moduleFormat}.development.js`,
+        ? `dist/js-stores.${moduleFormat}.production.js`
+        : `dist/js-stores.${moduleFormat}.development.js`,
 
       format: moduleFormat,
-
-      name: {
-        'core': 'jsStores',
-        'with-react': 'jsStores.withReact',
-        'with-js-widgets': 'jsStores.withJsWidgets'
-      }[module],
-
+      name: 'jsStores', 
       sourcemap: productive ? false : 'inline',
-
-      globals: {
-        react: 'React',
-        'js-widgets': 'jsWidgets'
-      }
     },
-
-    external: ['react', 'js-widgets'],
 
     plugins: [
       resolve(),
@@ -66,11 +51,6 @@ function createConfig(module, moduleFormat, productive) {
 
         values: {
           'process.env.NODE_ENV': productive ? "'production'" : "'development'",
-          "'../core/main/index'": "'js-stores'",
-          "'../../core/main/index'": "'js-stores'",
-          "'../../../core/main/index'": "'js-stores'",
-          "'../../../../core/main/index'": "'js-stores'",
-          "'../../../../../core/main/index'": "'js-stores'",
         }
       }),
       productive && (moduleFormat === 'esm' ? terser() : uglifyJS()),

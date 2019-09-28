@@ -3,7 +3,6 @@
     "target": "ES5",
     "strict": true,
     "noImplicitAny": true,
-    "jsx": "react",
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
@@ -17,8 +16,6 @@
     ]
   },
   "files": [
-    "src/modules/core/main/index.ts",
-    "src/modules/with-react/main/index.ts",
-    "src/modules/with-js-widgets/main/index.ts"
+    "src/main/index.ts"
   ]
 }

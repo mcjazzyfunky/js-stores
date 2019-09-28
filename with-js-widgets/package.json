@@ -1,4 +1,0 @@
-{
-  "typings": "../dist/types/with-js-widgets/main/index.d.ts",
-  "main": "./index.js"
-}
