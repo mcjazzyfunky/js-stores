@@ -40,7 +40,7 @@ const createCounterHandler: HandlerCreator<CounterState, typeof CounterActions> 
   }
 }
 
-const store = createStore(creatCounterHandler, { count: 0 })
+const store = createStore(createCounterHandler, { count: 0 })
 
 console.log('Initial state:', store.getState())
 
