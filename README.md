@@ -24,7 +24,10 @@ const CounterActions = defineMessages({
 
 type CounterState = { count: number }
 
-const createCounterHandler: HandlerCreator<CounterState, typeof CounterActions> = () => {
+type CounterHandlerCreator =
+  HandlerCreator<CounterState, typeof CounterActions>
+
+const createCounterHandler: CounterHandlerCreator = () => {
   return {
     increment(model, { delta }) {
       model.count += delta

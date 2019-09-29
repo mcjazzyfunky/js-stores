@@ -5,15 +5,18 @@ import { defineMessages } from 'js-messages'
 import createStore from '../../main/api/createStore'
 import HandlerCreator from '../../main/api/types/HandlerCreator'
 
-type CounterState = { count: number }
-
 const CounterActions = defineMessages({
   increment: (delta: number = 1) => ({ delta }),
   decrement: (delta: number = 1) => ({ delta }),
   reset: {}
 })
 
-const counterHandler: HandlerCreator<CounterState, typeof CounterActions> = use => {
+type CounterState = { count: number }
+
+type CounterHandlerCreator =
+  HandlerCreator<CounterState, typeof CounterActions>
+
+const counterHandler: CounterHandlerCreator = () => {
   return {
     increment(model, { delta }) {
       model.count += delta

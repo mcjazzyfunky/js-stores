@@ -2,11 +2,14 @@
 import { produce } from 'immer'
 
 // internal imports
-import Handler from './types/Handler'
+import HandlerCreator from './types/HandlerCreator'
 
 // --- createStore --------------------------------------------------
 
-function createStore<S extends Record<string, any>>(handler: Handler<S, any>, initialState: S) {
+function createStore<S extends Record<string, any>>(
+  createHandler: HandlerCreator<S, any>,
+  initialState: S
+) {
   let
     observers: ((() => void) | null)[] = [],
     currState = initialState,
@@ -64,7 +67,7 @@ function createStore<S extends Record<string, any>>(handler: Handler<S, any>, in
       return ret
     },
 
-    ctrl = handler(withDraft as any), // TODO
+    ctrl = createHandler(withDraft as any), // TODO
 
     dispatch = (msg: any) => {
       if (msg && msg.type && typeof msg.type === 'string') {
