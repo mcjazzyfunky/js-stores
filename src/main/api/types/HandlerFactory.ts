@@ -1,6 +1,6 @@
-// --- HandlerCreator -----------------------------------------------
+// --- HandlerFactory -----------------------------------------------
 
-type HandlerCreator<
+type HandlerFactory<
   S extends Record<string, any>,
   T
 > =
@@ -39,4 +39,4 @@ type HandlerCreator<
 
 // --- exports ------------------------------------------------------
 
-export default HandlerCreator
+export default HandlerFactory

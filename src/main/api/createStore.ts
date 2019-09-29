@@ -2,12 +2,12 @@
 import { produce } from 'immer'
 
 // internal imports
-import HandlerCreator from './types/HandlerCreator'
+import HandlerFactory from './types/HandlerFactory'
 
 // --- createStore --------------------------------------------------
 
 function createStore<S extends Record<string, any>>(
-  createHandler: HandlerCreator<S, any>,
+  createHandler: HandlerFactory<S, any>,
   initialState: S
 ) {
   let

@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { defineMessages } from 'js-messages'
 
 import createStore from '../../main/api/createStore'
-import HandlerCreator from '../../main/api/types/HandlerCreator'
+import HandlerFactory from '../../main/api/types/HandlerFactory'
 
 const CounterActions = defineMessages({
   increment: (delta: number = 1) => ({ delta }),
@@ -13,10 +13,10 @@ const CounterActions = defineMessages({
 
 type CounterState = { count: number }
 
-type CounterHandlerCreator =
-  HandlerCreator<CounterState, typeof CounterActions>
+type CounterHandlerFactory =
+  HandlerFactory<CounterState, typeof CounterActions>
 
-const counterHandler: CounterHandlerCreator = () => {
+const createCounterHandler: CounterHandlerFactory = () => {
   return {
     increment(model, { delta }) {
       model.count += delta
@@ -32,7 +32,7 @@ const counterHandler: CounterHandlerCreator = () => {
   }
 }
 
-const store = createStore(counterHandler as any, { count: 0 }) // TODO!!!!!!!!!!!!
+const store = createStore(createCounterHandler as any, { count: 0 }) // TODO!!!!!!!!!!!!
 
 describe('createStore', () => {
   it('some test', () => {
