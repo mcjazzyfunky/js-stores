@@ -6,10 +6,22 @@ import HandlerFactory from './types/HandlerFactory'
 
 // --- createStore --------------------------------------------------
 
-function createStore<S extends Record<string, any>>(
+function createStore<S extends State>(
   createHandler: HandlerFactory<S, any>,
   initialState: S
-) {
+): Store<S>
+
+function createStore<S extends State, D>(
+  createHandler: HandlerFactory<S, any, D>,
+  initialState: S,
+  dependencies: D
+): Store<S> 
+
+function createStore<S extends State, D = null>(
+  createHandler: HandlerFactory<S, any, D>,
+  initialState: S,
+  dependencies?: D
+): Store<S> {
   let
     observers: ((() => void) | null)[] = [],
     currState = initialState,
@@ -67,19 +79,29 @@ function createStore<S extends Record<string, any>>(
       return ret
     },
 
-    ctrl = createHandler(withDraft as any), // TODO
+    handler = (createHandler as any)(withDraft, dependencies), // TODO!!!!!
 
     dispatch = (msg: any) => {
       if (msg && msg.type && typeof msg.type === 'string') {
         const type = msg.type
 
-        if (ctrl.hasOwnProperty(type)) {
-          withDraft(draft => ctrl[type](draft, msg.payload, msg.meta))
+        if (handler.hasOwnProperty(type)) {
+          withDraft(draft => handler[type](draft, msg.payload, msg.meta))
         }
       }
     }
 
   return { subscribe, getState, dispatch }
+}
+
+// --- locals -------------------------------------------------------
+
+type State = Record<string, any>
+
+type Store<S extends State> = {
+  getState(): S,
+  subscribe(observer: () => void): () => void,
+  dispatch(msg: any): void
 }
 
 // --- exports ------------------------------------------------------

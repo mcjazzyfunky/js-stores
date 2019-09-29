@@ -2,13 +2,14 @@
 
 type HandlerFactory<
   S extends Record<string, any>,
-  T
+  T,
+  D = {}
 > =
   T extends {
     [k: string]:
       (...args: any[]) => { type: string, payload?: any, meta?: any }
     }
-  ? (use: <R>(draft: S) => R) => {
+  ? (use: <R>(draft: S) => R, depencencies: D) => {
       [K in keyof Partial<T>]:
         T[K] extends (...args: any[]) => { type: string, payload: infer P, meta: infer M }
           ? (draft: S, payload: P, meta: M) => any 
@@ -23,7 +24,7 @@ type HandlerFactory<
   : T extends {
       [k: string]: { type: string, payload?: any, meta?: any }
     }
-  ? (use: <R>(draft: S) => R) => {
+  ? (use: <R>(draft: S) => R, dependencies: D) => {
       [K in keyof Partial<T>]:
         T[K] extends { type: string, payload: infer P, meta: infer M }
           ? (draft: S, payload: P, meta: M) => any 
