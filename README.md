@@ -14,7 +14,7 @@ npm install --save js-stores
 ## Usage
 ```ts
 import { defineMessages } from 'js-messages'
-import { createStore, Handler } from 'js-stores'
+import { createStore, HandlerCreator } from 'js-stores'
 
 const CounterActions = defineMessages({
   increment: (delta: number = 1) => ({ delta }),
@@ -24,7 +24,7 @@ const CounterActions = defineMessages({
 
 type CounterState = { count: number }
 
-const createCounterHandler: Handler<CounterState, typeof CounterActions> = () => {
+const createCounterHandler: HandlerCreator<CounterState, typeof CounterActions> = () => {
   return {
     increment(model, { delta }) {
       model.count += delta
