@@ -24,7 +24,7 @@ const CounterActions = defineMessages({
 
 type CounterState = { count: number }
 
-const counterHandler: Handler<CounterState, typeof CounterActions> = () => {
+const createCounterHandler: Handler<CounterState, typeof CounterActions> = () => {
   return {
     increment(model, { delta }) {
       model.count += delta
@@ -40,7 +40,7 @@ const counterHandler: Handler<CounterState, typeof CounterActions> = () => {
   }
 }
 
-const store = createStore(counterHandler, { count: 0 })
+const store = createStore(creatCounterHandler, { count: 0 })
 
 console.log('Initial state:', store.getState())
 
