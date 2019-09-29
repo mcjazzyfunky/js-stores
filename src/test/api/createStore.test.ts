@@ -8,8 +8,8 @@ import Handler from '../../main/api/types/Handler'
 type CounterState = { count: number }
 
 const CounterActions = defineMessages({
-  increment: (delta = 1) => ({ delta }),
-  decrement: (delta = 1) => ({ delta }),
+  increment: (delta: number = 1) => ({ delta }),
+  decrement: (delta: number = 1) => ({ delta }),
   reset: {}
 })
 
@@ -29,7 +29,7 @@ const counterHandler: Handler<CounterState, typeof CounterActions> = use => {
   }
 }
 
-const store = createStore(counterHandler as any, { count: 0 })
+const store = createStore(counterHandler as any, { count: 0 }) // TODO!!!!!!!!!!!!
 
 describe('createStore', () => {
   it('some test', () => {
