@@ -17,8 +17,8 @@ import { defineMessages } from 'js-messages'
 import { createStore, Handler } from 'js-stores'
 
 const CounterActions = defineMessages({
-  increment: (delta = 1) => ({ delta }),
-  decrement: (delta = 1) => ({ delta }),
+  increment: (delta: number = 1) => ({ delta }),
+  decrement: (delta: number = 1) => ({ delta }),
   reset: {}
 })
 
