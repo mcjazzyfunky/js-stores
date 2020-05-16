@@ -1,3 +1,4 @@
 # js-stores
 
-Project has not been started yet.
+Project has just started.
+Really nothing interesting yet.

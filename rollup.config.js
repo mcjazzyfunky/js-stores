@@ -31,12 +31,6 @@ function createConfig(moduleFormat, productive) {
       format: moduleFormat,
       name: 'jsStores', 
       sourcemap: productive ? false : 'inline',
-
-      globals: {
-        'immer': 'Immer'
-      },
-
-      external: ['immer']
     },
 
     plugins: [
