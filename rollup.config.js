@@ -29,9 +29,15 @@ function createConfig(moduleFormat, productive) {
         : `dist/js-stores.${moduleFormat}.development.js`,
 
       format: moduleFormat,
-      name: 'jsStores', 
+      name: 'jsStores',
       sourcemap: productive ? false : 'inline',
+
+      globals: {
+        rxjs: 'rx'
+      }
     },
+
+    external: ['rxjs'],
 
     plugins: [
       resolve(),
@@ -47,10 +53,10 @@ function createConfig(moduleFormat, productive) {
         }
       }),
       typescript({
-        exclude: 'node_modules/**',
+        exclude: 'node_modules/**'
       }),
       productive && (moduleFormat === 'esm' ? terser() : uglifyJS()),
       productive && gzip()
-    ],
+    ]
   }
 }
