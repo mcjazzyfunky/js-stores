@@ -1,10 +1,9 @@
-import State from './State'
-import Message from './Message'
+import State from '../../api/types/State'
 
-type Store<S extends State, M extends Message> = {
-  dispatch(msg: M): void,
-  getState(): S,
-  subscribe(listener: () => void): () => void,
+type Store<S extends State> = {
+  dispatch(msg: any): void
+  getState(): S
+  subscribe(listener: () => void): () => void
 }
 
 export default Store
